@@ -218,11 +218,14 @@ public class InsertPostPipeline : Pipeline<InsertInputData, InsertOutputData>
 
     if (context.Exceptions != null)
     {
-      //log or rethrow exceptions here
+      	//log or rethrow exceptions here
     }
     if (context.Output == null)
     {
-      context.Output.ErrorMessage = ContentEditResult.Error(ContentsMessages.Common_ProcessingError);
+      	context.Output = new InsertOutputData
+	{
+	    ErrorMessage = "There was an error while processing your request."
+	}
     }
 
     return;

@@ -11,7 +11,6 @@ namespace Sanatana.Patterns.Pipelines
     {
         public TInput Input { get; set; }
         public TOutput Output { get; set; }
-        public bool Completed { get; set; }
         public int RollBackFromStepIndex { get; set; }
         public List<Exception> Exceptions { get; set; }
     }

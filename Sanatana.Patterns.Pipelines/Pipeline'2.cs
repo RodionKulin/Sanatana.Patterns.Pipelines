@@ -123,9 +123,10 @@ namespace Sanatana.Patterns.Pipelines
         //execute
         public virtual async Task<TOutput> Execute(TInput inputModel, TOutput outputModel)
         {
+            bool completed = true;
+
             var context = new PipelineContext<TInput, TOutput>()
             {
-                Completed = true,
                 Input = inputModel,
                 RollBackFromStepIndex = -1,
                 Exceptions = null,
@@ -136,8 +137,8 @@ namespace Sanatana.Patterns.Pipelines
             {
                 foreach (IPipelineModule<TInput, TOutput> module in Modules)
                 {
-                    context.Completed = await module.RollForward(context).ConfigureAwait(false);
-                    if (context.Completed == false)
+                    completed = await module.RollForward(context).ConfigureAwait(false);
+                    if (completed == false)
                     {
                         break;
                     }
@@ -146,7 +147,7 @@ namespace Sanatana.Patterns.Pipelines
             }
             catch (Exception ex)
             {
-                context.Completed = false;
+                completed = false;
 
                 if (context.Exceptions == null)
                 {
@@ -155,7 +156,7 @@ namespace Sanatana.Patterns.Pipelines
                 context.Exceptions.Add(ex);
             }
 
-            if(context.Completed == false)
+            if(completed == false)
             {
                 //start rollback from last successfuly completed step.
                 await RollBack(context).ConfigureAwait(false);

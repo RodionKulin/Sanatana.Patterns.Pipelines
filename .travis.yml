@@ -3,6 +3,5 @@ mono: none
 dotnet: 2.1.2
 solution: Sanatana.Patterns.Pipelines.sln
 script:
-  - dotnet build Sanatana.Patterns.Pipelines.sln --configuration Release
-  - dotnet pack Sanatana.Patterns.Pipelines/Sanatana.Patterns.Pipelines.csproj -o ../nuget
+  - dotnet pack Sanatana.Patterns.Pipelines/Sanatana.Patterns.Pipelines.csproj -c Release -o ../nuget -v n
   - dotnet nuget push nuget/Sanatana.Patterns.Pipelines.*.nupkg --force-english-output -k $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
